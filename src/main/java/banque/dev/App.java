@@ -24,6 +24,7 @@ import banque.entities.dao.BanqueDao;
 import banque.entities.dao.ClientDao;
 import banque.entities.dao.CompteDao;
 import banque.entities.dao.LivretADao;
+import banque.entities.dao.OperationDao;
 import banque.entities.dao.VirementDao;
 
 /**
@@ -50,18 +51,25 @@ public class App {
 		Client c = new Client("Lecompte", "Jean", LocalDate.parse("1990-10-15"), 
 				new Adresse(10, "rue des morpions", 31000, "Toulouse"), 
 				b);
+		Client c1 = new Client("Dicule", "Henri", LocalDate.parse("1985-02-20"), 
+				new Adresse(3, "rue des virage", 69001, "Lyon"), 
+				b);
 		ClientDao client = new ClientDao();
 		
 		client.insert(c, entityManagerFactory);
+		client.insert(c1, entityManagerFactory);
 		
 		List<Client> clients = new ArrayList<>();
 		clients.add(c);
+		clients.add(c1);
 		
 		//Insertion d'une instance de compte en bdd
 		Compte cp = new Compte(clients, "123456", 1562.25);
 		CompteDao compte = new CompteDao();
 		
 		compte.insert(cp, entityManagerFactory);
+		
+		clients.remove(1);
 		
 		//Insertion d'une instance d'assurance vie en bdd
 		AssuranceVie ass = new AssuranceVie(new Compte(clients, "789654", 1500.00), LocalDate.parse("2050-10-20"), 5.00);
@@ -80,6 +88,12 @@ public class App {
 		VirementDao vDao = new VirementDao();
 		
 		vDao.insert(v, entityManagerFactory);
+		
+		//Insertion d'une instance de Operation en bdd
+		Operation op = new Operation(LocalDateTime.parse("2020-04-05T10:30:00"), 100.00, "Impôt", cp);
+		OperationDao oDao = new OperationDao();
+		
+		oDao.insert(op, entityManagerFactory);
 		
 		entityManagerFactory.close();
 
