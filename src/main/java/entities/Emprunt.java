@@ -44,7 +44,7 @@ public class Emprunt {
 	private Integer idClient;
 	
 	@ManyToOne
-	@JoinColumn(name ="ID", insertable = false, updatable = false)
+	@JoinColumn(name ="ID_CLIENT", insertable = false, updatable = false)
 	private Client client;
 
 	/**
